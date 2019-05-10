@@ -1,4 +1,6 @@
 import random
+
+
 def get_session_key():
 	"""generate 10 char random string"""
 	result = ""
@@ -12,6 +14,7 @@ def get_hash_str():
 	for i in range(5):
 		li += str(int(int((6 * random.random()) + 1)))
 	return li
+
 
 # session protector class
 class Session_protector:
@@ -65,21 +68,24 @@ class Session_protector:
 		else:
 			return str(int(session_key) + val)
 
-#initial - start with random string
-hash_string = get_hash_str()
-skey_initial = get_session_key()
-protector1 = Session_protector(hash_string)
-protector2 = Session_protector(hash_string)
-#stage 0 
-skey1 = protector1.next_session_key(skey_initial)
-skey2 = protector2.next_session_key(skey_initial)
-assert skey1 == skey2
-#stage 1 - each protector use it's own skey and compare with another's side
-skey3 = protector1.next_session_key(skey1)
-skey4 = protector2.next_session_key(skey2)
-assert skey3 == skey4
-#stage 2
-skey5 = protector1.next_session_key(skey3)
-skey6 = protector2.next_session_key(skey4)
-assert skey5 == skey6
-print (skey1, skey2, skey3, skey4, skey5, skey6)
+
+
+if __name__ == "__main__":
+	#initial - start with random string
+	hash_string = get_hash_str()
+	skey_initial = get_session_key()
+	protector1 = Session_protector(hash_string)
+	protector2 = Session_protector(hash_string)
+	#stage 0
+	skey1 = protector1.next_session_key(skey_initial)
+	skey2 = protector2.next_session_key(skey_initial)
+	assert skey1 == skey2
+	#stage 1 - each protector use it's own skey and compare with another's side
+	skey3 = protector1.next_session_key(skey1)
+	skey4 = protector2.next_session_key(skey2)
+	assert skey3 == skey4
+	#stage 2
+	skey5 = protector1.next_session_key(skey3)
+	skey6 = protector2.next_session_key(skey4)
+	assert skey5 == skey6
+	print (skey1, skey2, skey3, skey4, skey5, skey6)
